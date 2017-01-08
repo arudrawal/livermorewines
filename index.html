@@ -46,17 +46,18 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
-          <ul class="nav nav-sidebar">          
-            <li><form>
-                <input type="text" class="form-control" placeholder="Search...">
-              </form></li>
-            <li class="active"><a href="#">Wine atractions <span class="sr-only">(current)</span></a></li>
-            <li><a href="#">Reports</a></li>
-            <li><a href="#">Analytics</a></li>
-            <li><a href="#">Export</a></li>
-          </ul>
+            <ul class="nav nav-sidebar">
+                <li><form>
+                    <input type="text" class="form-control" placeholder="Search...">
+                </form></li>
+            </ul>
+            <!-- for active <span class="sr-only">(current)</span> -->
+            <ul class="nav nav-sidebar" data-bind='foreach: wineryList'>
+                <li> <a href="" data-bind='text: $data.name, click: $parent.selectWinery'></a></li>
+            </ul>
           <!--
           <ul class="nav nav-sidebar">
+            <li class="active"><a href="#">Wine atractions </a></li>
             <li><a href="">Nav item</a></li>
             <li><a href="">Nav item again</a></li>
             <li><a href="">One more nav</a></li>
