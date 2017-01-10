@@ -24,12 +24,13 @@
         var divMap = document.getElementById('gmap');
         var livermoreCA = {lat: 37.67549, lng: -121.7582};
         var map = new google.maps.Map(divMap, 
-                        {zoom: 14,
-                         center: livermoreCA});
-        var marker = new google.maps.Marker({
-            position: livermoreCA,
-            map: map
-        });
+                        {zoom: 11, center: livermoreCA});
+        for (i=0; i < initalListWineries.length; i++){
+            var pos = {lat: initalListWineries[i].lat, 
+                       lng: initalListWineries[i].lng};
+            var marker = new google.maps.Marker({
+                position: pos, map: map});
+        }
         console.log("Google map initialized");
     }
   </script>
@@ -75,14 +76,17 @@
         </div>
       </div>
     </div>
+        
+    <script async defer 
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLJETboOjNSYsbmjsjeoTvOZcqZ2b2xJg&callback=initMap"> 
+    </script>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <!-- Include all compiled plugins (below), or include individual files as needed -->    
     <script src="js/bootstrap.min.js"></script>
     <script src="js/knockout-3.4.1.js"></script>    
     <script src="js/appwines.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLJETboOjNSYsbmjsjeoTvOZcqZ2b2xJg&callback=initMap"
-  async defer>
+    
 </script>
 </script>
   </body>
