@@ -29,7 +29,22 @@
             var pos = {lat: initalListWineries[i].lat, 
                        lng: initalListWineries[i].lng};
             var marker = new google.maps.Marker({
-                position: pos, map: map});
+                position: pos, map: map, title: initalListWineries[i].name});
+            var contentString = '<div id="content">'+
+                '<div id="name">'+ initalListWineries[i].name +'</div>'+
+                '<div id="addr">'+ initalListWineries[i].addr +'</div>'+
+                '<div id="phone">'+ initalListWineries[i].phone +'</div>'+
+                '</div>';
+            marker.addListener('click', function() {
+                    // Create unique copy of infoWindow
+                    var infowindow = new google.maps.InfoWindow({
+                        content: contentString
+                    });
+                    function inner (){ // This is real callback
+                        infowindow.open(map, marker);
+                    }
+                    return inner;
+                }()); // Function invked
         }
         console.log("Google map initialized");
     }
