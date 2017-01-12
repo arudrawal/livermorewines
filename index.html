@@ -25,15 +25,15 @@
         var livermoreCA = {lat: 37.67549, lng: -121.7582};
         var map = new google.maps.Map(divMap, 
                         {zoom: 11, center: livermoreCA});
-        for (i=0; i < initalListWineries.length; i++){
-            var pos = {lat: initalListWineries[i].lat, 
-                       lng: initalListWineries[i].lng};
+        for (i=0; i < wineriesModel.length; i++){
+            var pos = {lat: wineriesModel[i].lat, 
+                       lng: wineriesModel[i].lng};
             var marker = new google.maps.Marker({
-                position: pos, map: map, title: initalListWineries[i].name});
+                position: pos, map: map, title: wineriesModel[i].name});
             var contentString = '<div id="content">'+
-                '<div id="name">'+ initalListWineries[i].name +'</div>'+
-                '<div id="addr">'+ initalListWineries[i].addr +'</div>'+
-                '<div id="phone">'+ initalListWineries[i].phone +'</div>'+
+                '<div id="name">'+ wineriesModel[i].name +'</div>'+
+                '<div id="addr">'+ wineriesModel[i].addr +'</div>'+
+                '<div id="phone">'+ wineriesModel[i].phone +'</div>'+
                 '</div>';
             marker.addListener('click', function() {
                     // Create unique copy of infoWindow
@@ -42,6 +42,7 @@
                     });
                     function inner (){ // This is real callback
                         infowindow.open(map, marker);
+                        // increment click counter here.
                     }
                     return inner;
                 }()); // Function invked
@@ -63,13 +64,14 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
-                <li><form>
-                    <input type="text" class="form-control" placeholder="Search...">
-                </form></li>
+                <form class="form-inline" data-bind="submit: filterList">
+                    <input type="text" id='filter' class="form-control" placeholder="Search...">
+                    <!--<input type="button" name="Filter" value="Filter"></button>-->
+                </form>
             </ul>
             <!-- for active <span class="sr-only">(current)</span> -->
             <ul class="nav nav-sidebar" data-bind='foreach: wineryList'>
-                <li> <a href="" data-bind='text: $data.name, click: $parent.selectWinery'></a></li>
+                <li> <a href="" data-bind='text: $data.name(), click: $parent.selectWinery'></a></li>
             </ul>
           <!--
           <ul class="nav nav-sidebar">
