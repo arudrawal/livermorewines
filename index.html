@@ -41,18 +41,18 @@
                 position: pos, map: map, title: listWineries[i].name});            
             markers.push(marker);
             
-            var contentString = '<div id="content">'+
-                '<div id="name">'+ listWineries[i].name +'</div>'+
-                '<div id="addr">'+ listWineries[i].addr +'</div>'+
-                '<div id="phone">'+ listWineries[i].phone +'</div>'+
-                '</div>';
             marker.addListener('click', function() {
+                    var contentString = '<div id="content">'+
+                        '<div id="name">'+ listWineries[i].name +'</div>'+
+                        '<div id="addr">'+ listWineries[i].addr +'</div>'+
+                        '<div id="phone">'+ listWineries[i].phone +'</div>'+
+                        '</div>';                    
                     // Create unique copy of infoWindow
                     var infowindow = new google.maps.InfoWindow({
                         content: contentString
                     });
                     function inner (){ // This is real callback
-                        infowindow.open(map, marker);
+                        infowindow.open(map, this);//this=marker
                         // increment click counter here.
                     }
                     return inner;

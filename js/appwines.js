@@ -52,15 +52,7 @@ var wineriesModel = [
          clickcount: 0},
 
 ];
-/*
-var Winery = function(data) {
-    this.name = data.name;
-    this.addr = data.addr;
-    this.phone = data.phone;
-    this.lat = data.lat;
-    this.lng = data.lng;
-    this.clickcount = ko.observable(data.clickcount);
-};*/
+
 var Winery = function(data) {
     this.name = ko.observable(data.name);
     this.addr = ko.observable(data.addr);
@@ -96,9 +88,8 @@ var viewModel = function (){
                     }
                 }
             }
-            updateMarkers(filteredList);
-            console.log('filterList called with filter:' + stringFilter);
-            // Redo the map with filtered list.
+            updateMarkers(filteredList);// Redo the map with filtered list.
+            //console.log('filterList called with filter:' + stringFilterLC);          
     }
     //this.currentWinery = ko.observable(this.wineryList()[0]);
     //this.incrementCounter = function() {
