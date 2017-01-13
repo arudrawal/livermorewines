@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="Udacity project - Livermore Winery Map">
+    <meta name="author" content="AKR">
     <title>Livermore Wine Country</title>
 
     <!-- Bootstrap -->
@@ -20,20 +22,29 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   <script>
-    function initMap(){        
-        var divMap = document.getElementById('gmap');
-        var livermoreCA = {lat: 37.67549, lng: -121.7582};
-        var map = new google.maps.Map(divMap, 
-                        {zoom: 11, center: livermoreCA});
-        for (i=0; i < wineriesModel.length; i++){
-            var pos = {lat: wineriesModel[i].lat, 
-                       lng: wineriesModel[i].lng};
+    var map; // load map only once
+    var markers=[]; // maintain markers
+    // Sets the map on all markers in the array.
+    function setMapOnAll(map) {
+        for (var i = 0; i < markers.length; i++) {
+          markers[i].setMap(map);
+        }
+    }
+    // Set markers from the array of wineries
+    function updateMarkers(listWineries){
+        setMapOnAll(null);// Delete all markers
+        markers = [];
+        for (i=0; i < listWineries.length; i++){
+            var pos = {lat: listWineries[i].lat, 
+                       lng: listWineries[i].lng};
             var marker = new google.maps.Marker({
-                position: pos, map: map, title: wineriesModel[i].name});
+                position: pos, map: map, title: listWineries[i].name});            
+            markers.push(marker);
+            
             var contentString = '<div id="content">'+
-                '<div id="name">'+ wineriesModel[i].name +'</div>'+
-                '<div id="addr">'+ wineriesModel[i].addr +'</div>'+
-                '<div id="phone">'+ wineriesModel[i].phone +'</div>'+
+                '<div id="name">'+ listWineries[i].name +'</div>'+
+                '<div id="addr">'+ listWineries[i].addr +'</div>'+
+                '<div id="phone">'+ listWineries[i].phone +'</div>'+
                 '</div>';
             marker.addListener('click', function() {
                     // Create unique copy of infoWindow
@@ -47,22 +58,35 @@
                     return inner;
                 }()); // Function invked
         }
-        console.log("Google map initialized");
+    }
+    function initMap(){        
+        var divMap = document.getElementById('gmap');
+        var livermoreCA = {lat: 37.67549, lng: -121.7582};
+        map = new google.maps.Map(divMap, 
+                        {zoom: 12, center: livermoreCA});
+        updateMarkers(wineriesModel);
+        //console.log("Google map initialized");
     }
   </script>
   </head>
   <body>
     <nav class="navbar navbar-inverse navbar-fixed-top" style="margin-bottom: 0">
-      <!--<div class="container-fluid">-->
+      <div class="container-fluid">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>        
         <div class="navbar-header">
           <a class="navbar-brand" href="#">Livermore Wines Country</a>
-        <!--</div>-->
+        </div>
       </div>
     </nav>
 
-    <div class="container-fluid">
+    <div class="container-fluid" >
       <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
+        <div class="col-sm-3 col-md-2 sidebar" id="navbar">
             <ul class="nav nav-sidebar">
                 <form class="form-inline" data-bind="submit: filterList">
                     <input type="text" id='filter' class="form-control" placeholder="Search...">
@@ -73,20 +97,6 @@
             <ul class="nav nav-sidebar" data-bind='foreach: wineryList'>
                 <li> <a href="" data-bind='text: $data.name(), click: $parent.selectWinery'></a></li>
             </ul>
-          <!--
-          <ul class="nav nav-sidebar">
-            <li class="active"><a href="#">Wine atractions </a></li>
-            <li><a href="">Nav item</a></li>
-            <li><a href="">Nav item again</a></li>
-            <li><a href="">One more nav</a></li>
-            <li><a href="">Another nav item</a></li>
-            <li><a href="">More navigation</a></li>
-          </ul>
-          <ul class="nav nav-sidebar">
-            <li><a href="">Nav item again</a></li>
-            <li><a href="">One more nav</a></li>
-            <li><a href="">Another nav item</a></li>
-          </ul>-->
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" id='gmap'
             style='height:700px'>

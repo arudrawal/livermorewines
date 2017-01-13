@@ -78,23 +78,27 @@ var viewModel = function (){
     });
     this.filterList = function (formElement){
             var feFilter = document.getElementById('filter');
-            var stringFilter = feFilter.value;
-            var exp = "/" + stringFilter + "/";            
+            var stringFilterLC = feFilter.value.toLowerCase();
+            var exp = "/" + stringFilterLC + "/";            
             itemCount = len = wineriesModel.length;
-            //var filteredList = ko.observableArray([]);
+            var filteredList = new Array();
             self.wineryList.removeAll();
             for (idx=0; idx < itemCount; idx++){
-            if (stringFilter.length <= 0 || stringFilter==='') {
+                if (stringFilterLC.length <= 0 || stringFilterLC==='') {
                     self.wineryList.push(new Winery(wineriesModel[idx]));
+                    filteredList.push(wineriesModel[idx]);
                 } else {
-                    var name = wineriesModel[idx].name;
+                    var nameLC = wineriesModel[idx].name.toLowerCase();
                     //if (name.search(exp) >= 0){ // found
-                    if (name.indexOf(stringFilter) !== -1){
+                    if (nameLC.indexOf(stringFilterLC) !== -1){
                         self.wineryList.push(new Winery(wineriesModel[idx]));
+                        filteredList.push(wineriesModel[idx]);
                     }
                 }
             }
+            updateMarkers(filteredList);
             console.log('filterList called with filter:' + stringFilter);
+            // Redo the map with filtered list.
     }
     //this.currentWinery = ko.observable(this.wineryList()[0]);
     //this.incrementCounter = function() {
