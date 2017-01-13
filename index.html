@@ -24,10 +24,22 @@
   <script>
     var map; // load map only once
     var markers=[]; // maintain markers
+    var greenIcon = 'http://maps.google.com/mapfiles/ms/icons/green-dot.png';
+    var defaultIcon = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png';
     // Sets the map on all markers in the array.
     function setMapOnAll(map) {
         for (var i = 0; i < markers.length; i++) {
           markers[i].setMap(map);
+        }
+    }
+    function restoreDefaultIcon(exceptThis) {
+        for (var i = 0; i < markers.length; i++) {
+          if (exceptThis != markers[i]){
+            markers[i].setIcon(defaultIcon);
+            if (markers[i].infowindow) {
+                markers[i].infowindow.close();
+            }
+          }
         }
     }
     // Set markers from the array of wineries
@@ -38,7 +50,10 @@
             var pos = {lat: listWineries[i].lat, 
                        lng: listWineries[i].lng};
             var marker = new google.maps.Marker({
-                position: pos, map: map, title: listWineries[i].name});            
+                position: pos, map: map, title: listWineries[i].name});
+            if (defaultIcon == null){
+                defaultIcon = marker.getIcon();
+            }
             markers.push(marker);
             
             marker.addListener('click', function() {
@@ -51,9 +66,13 @@
                     var infowindow = new google.maps.InfoWindow({
                         content: contentString
                     });
+                    //infowindow.marker = this;
                     function inner (){ // This is real callback
                         infowindow.open(map, this);//this=marker
-                        // increment click counter here.
+                        this.infowindow = infowindow; // save object
+                        this.setIcon(greenIcon);
+                        // Restore default icon and close other infowindow
+                        restoreDefaultIcon(this);
                     }
                     return inner;
                 }()); // Function invked
@@ -63,7 +82,9 @@
         var divMap = document.getElementById('gmap');
         var livermoreCA = {lat: 37.67549, lng: -121.7582};
         map = new google.maps.Map(divMap, 
-                        {zoom: 12, center: livermoreCA});
+                        {zoom: 12, center: livermoreCA});        
+        //map.addEventListener(MapEvent.INFOWINDOW_CLOSED,alert('abc')); 
+                                //{restoreDefaultIcon(null);});
         updateMarkers(wineriesModel);
         //console.log("Google map initialized");
     }
