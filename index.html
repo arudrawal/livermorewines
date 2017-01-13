@@ -57,6 +57,7 @@
             markers.push(marker);
             
             marker.addListener('click', function() {
+                    // Pull Yelp rating and show in info window.
                     var contentString = '<div id="content">'+
                         '<div id="name">'+ listWineries[i].name +'</div>'+
                         '<div id="addr">'+ listWineries[i].addr +'</div>'+
