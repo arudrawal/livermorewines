@@ -68,7 +68,9 @@ var Winery = function(data) {
 };
 // Consider a filter for the list.
 var viewModel = function (){
-    self = this; // use self with surity of context
+    // without var creates a global self and causes issue with gmap api
+    // self = this; 
+    var self = this; // use self with surity of context
     this.wineryList = ko.observableArray([]);
     wineriesModel.forEach(function (wineryItem){
             self.wineryList.push(new Winery(wineryItem));
