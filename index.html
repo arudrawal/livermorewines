@@ -110,12 +110,13 @@
   <body>
     <nav class="navbar navbar-inverse navbar-fixed-top" style="margin-bottom: 0">
       <div class="container-fluid">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" 
+            data-target="#navbar" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
-          </button>        
+          </button>
         <div class="navbar-header">
           <a class="navbar-brand" href="#">Livermore Wines Country</a>
         </div>
@@ -124,15 +125,17 @@
 
     <div class="container-fluid" >
       <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar" id="navbar">
+        <div class="col-sm-3 col-md-2 sidebar navbar-collapse collapse" id="navbar">
             <ul class="nav nav-sidebar">
+                <li class="active">            
                 <form class="form-inline" data-bind="submit: filterList">
                     <input type="text" id='filter' class="form-control" placeholder="Search...">
                     <!--<input type="button" name="Filter" value="Filter"></button>-->
                 </form>
+                </li>
             </ul>
             <!-- for active <span class="sr-only">(current)</span> -->
-            <ul class="nav nav-sidebar" data-bind='foreach: wineryList'>
+            <ul class="nav nav-sidebar" data-bind='foreach: wineryList' style='height: 100%;'>
                 <li> <a href="" data-bind='text: $data.name(), click: $parent.selectWinery'></a></li>
             </ul>
         </div>
