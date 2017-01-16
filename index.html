@@ -37,10 +37,20 @@
         for (var i = 0; i < markers.length; i++) {
           if (exceptThis != markers[i]){
             markers[i].setIcon(defaultIcon);
+            if (markers[i].getAnimation() !== null) {
+                markers[i].setAnimation(null);
+            }
             if (markers[i].infowindow) {
                 markers[i].infowindow.close();
             }
           }
+        }
+    }
+    function clearAnimation(){
+        for (var i = 0; i < markers.length; i++) {
+            if (markers[i].getAnimation() !== null) {
+                markers[i].setAnimation(null);
+            }
         }
     }
     // Set markers from the array of wineries
@@ -51,10 +61,12 @@
             var pos = {lat: listWineries[i].lat, 
                        lng: listWineries[i].lng};
             var marker = new google.maps.Marker({
-                position: pos, map: map, title: listWineries[i].name});
-            if (defaultIcon == null){
-                defaultIcon = marker.getIcon();
-            }
+                position: pos, map: map, 
+                title: listWineries[i].name,
+                animation: google.maps.Animation.DROP});
+            //if (defaultIcon == null){
+            //    defaultIcon = marker.getIcon();
+            //}
             markers.push(marker);
             
             marker.addListener('click', function() {
@@ -75,6 +87,9 @@
                         this.setIcon(greenIcon);
                         // Restore default icon and close other infowindow
                         restoreDefaultIcon(this);
+                        // set animation for this
+                        this.setAnimation(google.maps.Animation.BOUNCE);
+                        window.setTimeout(clearAnimation, 2000);
                     }
                     return inner;
                 }()); // Function invked

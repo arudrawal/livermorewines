@@ -73,7 +73,7 @@ var viewModel = function (){
     wineriesModel.forEach(function (wineryItem){
             self.wineryList.push(new Winery(wineryItem));
     });
-    // Return item index
+    // Return item index equal to marker index 
     this.getItemIdx = function(item){
         for (idx=0; idx < self.wineryList().length; idx++){
             if (self.wineryList()[idx] == item){
@@ -82,7 +82,7 @@ var viewModel = function (){
         }
         return -1;
     }
-
+    // on submit filter form
     this.filterList = function (formElement){
             var feFilter = document.getElementById('filter');
             var stringFilterLC = feFilter.value.toLowerCase();
@@ -108,9 +108,11 @@ var viewModel = function (){
     }
     // on list item select, simulate marker click event.
     this.selectWinery = function(wineryItem) {
-        index = self.getItemIdx(wineryItem);
+        index = self.getItemIdx(wineryItem);        
         console.log(wineryItem.name() + 'idx=' + index);
-        google.maps.event.trigger(markers[index], 'click');
+        if (index > 0) {
+            google.maps.event.trigger(markers[index], 'click');
+        }
     }
 }
 ko.applyBindings(new viewModel());
