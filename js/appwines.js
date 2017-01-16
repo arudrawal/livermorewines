@@ -113,7 +113,12 @@ var viewModel = function (){
         index = self.getItemIdx(wineryItem);        
         console.log(wineryItem.name() + 'idx=' + index);
         if (index > 0) {
-            google.maps.event.trigger(markers[index], 'click');
+            if (typeof google !== 'undefined'){
+                google.maps.event.trigger(markers[index], 'click');
+            } else {
+                emap = document.getElementById('gmap');
+                emap.innerHTML = "<h1>Can't load map</h1>";
+            }
         }
     }
 }

@@ -55,6 +55,11 @@
     }
     // Set markers from the array of wineries
     function updateMarkers(listWineries){
+        if (typeof google == 'undefined'){
+            emap = document.getElementById('gmap');
+            emap.innerHTML = "<h1>Can't load map</h1>";
+            return;
+        }
         setMapOnAll(null);// Delete all markers
         markers = [];
         for (i=0; i < listWineries.length; i++){
@@ -105,6 +110,11 @@
         updateMarkers(wineriesModel);
         //console.log("Google map initialized");
     }
+    function gmapError(){
+        emap = document.getElementById('gmap');
+        emap.innerHTML = "<h1>Can't load map</h1>";
+        console.log('Failed to load gmap');
+    }
   </script>
   </head>
   <body>
@@ -151,11 +161,17 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/knockout-3.4.1.js"></script>    
     <script src="js/appwines.js"></script>
-    
+
     <script async defer 
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLJETboOjNSYsbmjsjeoTvOZcqZ2b2xJg&callback=initMap"> 
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLJETboOjNSYsbmjsjeoTvOZcqZ2b2xJg&callback=initMap"
+         onerror="gmapError()">
     </script>
-    
+    <!--
+    <script async defer 
+        src="https://maps.googleapis.com/maps/api/js?callback=initMap"
+         onerror="gmapError()">
+    </script>
+    -->
 </script>
 </script>
   </body>
