@@ -1,11 +1,53 @@
 var googleMapApiKey = "AIzaSyB7odyxqSylhrPYpmNw6xg65tHCdKghI18";
 
 var wineriesModel = [
+        {name: '3 Steves Winery',
+         addr: '5700 Greenville Rd, Livermore',
+         phone: '(925)997-7736',
+         lat: 37.648543,
+         lng: -121.694541,
+         clickcount: 0},
+        
+        {name: 'Bent Creek Winery',
+         addr: '5455 Greenville Rd, Livermore',
+         phone: '(925)449-0458',
+         lat: 37.652584900, 
+         lng: -121.696612800,
+         clickcount: 0},
+
         {name: 'Concannon Vineyard',
          addr: '4590 Tesla road, Livermore',
          phone: '(800)258-9866',
          lat: 37.666217,
          lng: -121.739736,
+         clickcount: 0},
+        
+        {name: 'Crooked Vine Winery',
+         addr: '4948 Tesla Rd, Livermore',
+         phone: '(925)449-0458',
+         lat: 37.666327,
+         lng: -121.733695,
+         clickcount: 0},
+         
+        {name: 'Garre Vineyard & Winery',
+         addr: '7986 Tesla road, Livermore',
+         phone: '(925)371-8200',
+         lat: 37.636250,
+         lng: -121.557990,
+         clickcount: 0},
+
+        {name: 'Las Positas Vineyards',
+         addr: '1828 Wetmore road, Livermore',
+         phone: '(925)449-9463',
+         lat: 37.645922,
+         lng: -121.770524,
+         clickcount: 0},
+                
+        {name: 'Retzlaff Vineyards',
+         addr: '1356 S Livermore Ave, Livermore',
+         phone: '(925)447-8941',
+         lat: 37.673628,
+         lng: -121.750495,
          clickcount: 0},
         
         {name: 'Wente Vineyard',
@@ -14,43 +56,6 @@ var wineriesModel = [
          lat: 37.664250,
          lng: -121.725347,
          clickcount: 0},
-
-        
-        {name: 'Las Positas Vineyards',
-         addr: '1828 Wetmore road, Livermore',
-         phone: '(925)449-9463',
-         lat: 37.645922,
-         lng: -121.770524,
-         clickcount: 0},
-        
-        {name: 'Garre Vineyard & Winery',
-         addr: '7986 Tesla road, Livermore',
-         phone: '(925)371-8200',
-         lat: 37.636250,
-         lng: -121.557990,
-         clickcount: 0},
-        
-        {name: 'Retzlaff Vineyards',
-         addr: '1356 S Livermore Ave, Livermore',
-         phone: '(925)447-8941',
-         lat: 37.673628,
-         lng: -121.750495,
-         clickcount: 0},
-        
-        {name: '3 Steves Winery',
-         addr: '5700 Greenville Rd, Livermore',
-         phone: '(925)997-7736',
-         lat: 37.648543,
-         lng: -121.694541,
-         clickcount: 0},
-         
-        {name: 'Crooked Vine Winery',
-         addr: '4948 Tesla Rd, Livermore',
-         phone: '(925)449-0458',
-         lat: 37.666327,
-         lng: -121.733695,
-         clickcount: 0},
-
 ];
 
 var Winery = function(data) {
@@ -66,8 +71,18 @@ var viewModel = function (){
     self = this; // use self with surity of context
     this.wineryList = ko.observableArray([]);
     wineriesModel.forEach(function (wineryItem){
-        self.wineryList.push(new Winery(wineryItem));
+            self.wineryList.push(new Winery(wineryItem));
     });
+    // Return item index
+    this.getItemIdx = function(item){
+        for (idx=0; idx < self.wineryList().length; idx++){
+            if (self.wineryList()[idx] == item){
+                return idx;
+            }
+        }
+        return -1;
+    }
+
     this.filterList = function (formElement){
             var feFilter = document.getElementById('filter');
             var stringFilterLC = feFilter.value.toLowerCase();
@@ -91,14 +106,11 @@ var viewModel = function (){
             updateMarkers(filteredList);// Redo the map with filtered list.
             //console.log('filterList called with filter:' + stringFilterLC);          
     }
-    //this.currentWinery = ko.observable(this.wineryList()[0]);
-    //this.incrementCounter = function() {
-    //    self.currentWinery().clickCount( self.currentWinery().clickCount()+1);
-    //}
-    /*
+    // on list item select, simulate marker click event.
     this.selectWinery = function(wineryItem) {
-        console.log(wineryItem.name());
-        self.currentWinery(wineryItem);
-    }*/
+        index = self.getItemIdx(wineryItem);
+        console.log(wineryItem.name() + 'idx=' + index);
+        google.maps.event.trigger(markers[index], 'click');
+    }
 }
 ko.applyBindings(new viewModel());
