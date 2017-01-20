@@ -111,10 +111,10 @@
                 url: vurl4s,
                 dataType: 'json',
             }).done(function(result){
-                console.log(result.response.venue.rating); 
+                //console.log(result.response.venue.rating); 
                 if (result.meta.code == 200){
                     fsVenue[result.response.venue.id] = result.response.venue;
-                    console.log(result.response.venue.id);
+                    //console.log(result.response.venue.id);
                 }
             }).fail(function(result){
                 console.log(result);
@@ -122,6 +122,6 @@
         }
     }
     $( document ).ready(function() {
-        console.log( "ready!" );
+        //console.log( "ready!" );
         load4SquareData();
     });
