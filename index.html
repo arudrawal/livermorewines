@@ -14,6 +14,7 @@
     
     <!-- Custom styles for this template -->
     <link href="css/dashboard.css" rel="stylesheet">
+    <script src="js/gmapwines.js"></script>
     
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -21,101 +22,9 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-  
-  <script>
-    var map; // load map only once
-    var markers=[]; // maintain markers
-    var greenIcon = 'http://maps.google.com/mapfiles/ms/icons/green-dot.png';
-    var defaultIcon = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png';
-    // Sets the map on all markers in the array.
-    function setMapOnAll(map) {
-        for (var i = 0; i < markers.length; i++) {
-          markers[i].setMap(map);
-        }
-    }
-    function restoreDefaultIcon(exceptThis) {
-        for (var i = 0; i < markers.length; i++) {
-          if (exceptThis != markers[i]){
-            markers[i].setIcon(defaultIcon);
-            if (markers[i].getAnimation() !== null) {
-                markers[i].setAnimation(null);
-            }
-            if (markers[i].infowindow) {
-                markers[i].infowindow.close();
-            }
-          }
-        }
-    }
-    function clearAnimation(){
-        for (var i = 0; i < markers.length; i++) {
-            if (markers[i].getAnimation() !== null) {
-                markers[i].setAnimation(null);
-            }
-        }
-    }
-    // Set markers from the array of wineries
-    function updateMarkers(listWineries){
-        if (typeof google == 'undefined'){
-            emap = document.getElementById('gmap');
-            emap.innerHTML = "<h1>Can't load map</h1>";
-            return;
-        }
-        setMapOnAll(null);// Delete all markers
-        markers = [];
-        for (i=0; i < listWineries.length; i++){
-            var pos = {lat: listWineries[i].lat, 
-                       lng: listWineries[i].lng};
-            var marker = new google.maps.Marker({
-                position: pos, map: map, 
-                title: listWineries[i].name,
-                animation: google.maps.Animation.DROP});
-            //if (defaultIcon == null){
-            //    defaultIcon = marker.getIcon();
-            //}
-            markers.push(marker);
-            
-            marker.addListener('click', function() {
-                    // Pull Yelp rating and show in info window.
-                    var contentString = '<div id="content">'+
-                        '<div id="name">'+ listWineries[i].name +'</div>'+
-                        '<div id="addr">'+ listWineries[i].addr +'</div>'+
-                        '<div id="phone">'+ listWineries[i].phone +'</div>'+
-                        '</div>';                    
-                    // Create unique copy of infoWindow
-                    var infowindow = new google.maps.InfoWindow({
-                        content: contentString
-                    });
-                    //infowindow.marker = this;
-                    function inner (){ // This is real callback
-                        infowindow.open(map, this);//this=marker
-                        this.infowindow = infowindow; // save object
-                        this.setIcon(greenIcon);
-                        // Restore default icon and close other infowindow
-                        restoreDefaultIcon(this);
-                        // set animation for this
-                        this.setAnimation(google.maps.Animation.BOUNCE);
-                        window.setTimeout(clearAnimation, 2000);
-                    }
-                    return inner;
-                }()); // Function invked
-        }
-    }
-    function initMap(){        
-        var divMap = document.getElementById('gmap');
-        var livermoreCA = {lat: 37.67549, lng: -121.7582};
-        map = new google.maps.Map(divMap, 
-                        {zoom: 12, center: livermoreCA});        
-        //map.addEventListener(MapEvent.INFOWINDOW_CLOSED,alert('abc')); 
-                                //{restoreDefaultIcon(null);});
-        updateMarkers(wineriesModel);
-        //console.log("Google map initialized");
-    }
-    function gmapError(){
-        emap = document.getElementById('gmap');
-        emap.innerHTML = "<h1>Can't load map</h1>";
-        console.log('Failed to load gmap');
-    }
-  </script>
+  <!--  ClientID=PFVHQYLSUNA4ZUWSBBPLR3UDK0ZBN40FSEKBWPPY3D4BNNL3 -->
+  <!--  CLIENT_SECRET=5NV3TQ4E5SK30RTPHXIQO12NB5RUZDUMC0VDMCRVGAZB4MHN -->
+
   </head>
   <body>
     <nav class="navbar navbar-inverse navbar-fixed-top" style="margin-bottom: 0">
@@ -159,9 +68,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->    
     <script src="js/bootstrap.min.js"></script>
-    <script src="js/knockout-3.4.1.js"></script>    
-    <script src="js/appwines.js"></script>
-
+    <script src="js/knockout-3.4.1.js"></script>        
+    <script src="js/appwines.js"></script>    
     <script async defer 
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLJETboOjNSYsbmjsjeoTvOZcqZ2b2xJg&callback=initMap"
          onerror="gmapError()">

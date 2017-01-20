@@ -112,7 +112,7 @@ var viewModel = function (){
     this.selectWinery = function(wineryItem) {
         index = self.getItemIdx(wineryItem);        
         console.log(wineryItem.name() + 'idx=' + index);
-        if (index > 0) {
+        if (index >= 0) {
             if (typeof google !== 'undefined'){
                 google.maps.event.trigger(markers[index], 'click');
             } else {
