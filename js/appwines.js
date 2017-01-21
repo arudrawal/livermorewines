@@ -101,7 +101,7 @@ var viewModel = function (){
      * @return {intger} index, -1 if not found
      */
     this.getItemIdx = function(item){
-        for (var idx=0; idx < self.wineryList().length; idx++){
+        for (var idx = 0; idx < self.wineryList().length; idx++){
             if (self.wineryList()[idx] == item){
                 return idx;
             }
@@ -121,7 +121,7 @@ var viewModel = function (){
             var itemCount = len = wineriesModel.length;
             var filteredList = new Array();
             self.wineryList.removeAll();
-            for (var idx=0; idx < itemCount; idx++){
+            for (var idx = 0; idx < itemCount; idx++){
                 if (stringFilterLC.length <= 0 || stringFilterLC==='') {
                     self.wineryList.push(new Winery(wineriesModel[idx]));
                     filteredList.push(wineriesModel[idx]);
@@ -136,12 +136,12 @@ var viewModel = function (){
             updateMarkers(filteredList);// Redo the map with filtered list.
             //console.log('filterList called with filter:' + stringFilterLC);          
     }
-    // 
+
     /**
      * @description   on list item click, simulate marker click event.
      * @param  {Winery} Item clicked.
      * @return
-     */    
+     */
     this.selectWinery = function(wineryItem) {
         var index = self.getItemIdx(wineryItem);        
         //console.log(wineryItem.name() + 'idx=' + index);

@@ -67,7 +67,7 @@
         }
         setMapOnAll(null);// Delete all markers
         markers = [];
-        for (var idx=0; idx < listWineries.length; idx++){
+        for (var idx = 0; idx < listWineries.length; idx++){
             var pos = {lat: listWineries[idx].lat, 
                        lng: listWineries[idx].lng};
             var marker = new google.maps.Marker({
@@ -146,7 +146,7 @@
      * @returns
      */
     function load4SquareData(){
-        for (var idx=0; idx < wineriesModel.length; idx++){
+        for (var idx = 0; idx < wineriesModel.length; idx++){
             var url4s = URL4SQUARE + wineriesModel[idx].vid + '?' + CRED4SQUARE;
             $.ajax({
                 url: url4s,
