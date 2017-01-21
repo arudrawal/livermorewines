@@ -50,7 +50,10 @@
             <ul class="nav nav-sidebar">
                 <li class="active">            
                 <form class="form-inline" data-bind="submit: filterList">
-                    <input type="text" id='filter' class="form-control" placeholder="Search...">
+                    <input type="text" id='filter' class="form-control" placeholder="Search..." list='browselist'>
+                    <datalist id='browselist' data-bind='foreach: wineryList'>
+                        <option data-bind='value: $data.name()'>
+                    </datalist>
                     <!--<input type="button" name="Filter" value="Filter"></button>-->
                 </form>
                 </li>
