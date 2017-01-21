@@ -1,78 +1,66 @@
-var googleMapApiKey = "AIzaSyB7odyxqSylhrPYpmNw6xg65tHCdKghI18";
-
-
 var wineriesModel = [
         {name: '3 Steves Winery',
          addr: '5700 Greenville Rd, Livermore',
-         phone: '(925)997-7736',
+         phone: '(925) 997-7736',
          lat: 37.648543,
          lng: -121.694541,
-         vid:'51f41fc4498e28c865434cb5',
-         venue:{id:''},
-         clickcount: 0},
-        
+         vid:'51f41fc4498e28c865434cb5'},
+
         {name: 'Bent Creek Winery',
          addr: '5455 Greenville Rd, Livermore',
-         phone: '(925)449-0458',
+         phone: '(925) 449-0458',
          lat: 37.652584900, 
          lng: -121.696612800,
-         vid:'4bcb5bab511f9521f34cb1c7',
-         venue: {id:''},
-         clickcount: 0},
+         vid:'4bcb5bab511f9521f34cb1c7'},
 
         {name: 'Concannon Vineyard',
          addr: '4590 Tesla road, Livermore',
-         phone: '(800)258-9866',
+         phone: '(800) 258-9866',
          lat: 37.666217,
          lng: -121.739736,
-         vid:'4a627a03f964a52027c41fe3',
-         venue:{id:''},
-         clickcount: 0},
+         vid:'4a627a03f964a52027c41fe3'},
         
+        {name: 'Cuda Ridge Wines',
+         addr: '2400 Arroyo Road, Livermore',
+         phone: '(510) 304-0914',
+         lat: 37.6548485,
+         lng: -121.7668109,
+         vid:'539252af498e5e3ad199903c'},
+         
         {name: 'Crooked Vine Winery',
          addr: '4948 Tesla Rd, Livermore',
-         phone: '(925)449-0458',
+         phone: '(925) 449-0458',
          lat: 37.666327,
          lng: -121.733695,
-         vid:'4ad0d54cf964a5203fda20e3',
-         venue:{id:''},
-         clickcount: 0},
-         
+         vid:'4ad0d54cf964a5203fda20e3'},
+
         {name: 'Garre Vineyard & Winery',
          addr: '7986 Tesla road, Livermore',
-         phone: '(925)371-8200',
+         phone: '(925) 371-8200',
          lat: 37.636250,
          lng: -121.557990,
-         vid:'4ba55302f964a520cefa38e3',
-         venue:{id:''},
-         clickcount: 0},
+         vid:'4ba55302f964a520cefa38e3'},
 
         {name: 'Las Positas Vineyards',
          addr: '1828 Wetmore road, Livermore',
-         phone: '(925)449-9463',
+         phone: '(925) 449-9463',
          lat: 37.645922,
          lng: -121.770524,
-         vid:'4e3b43271838cb1b82d2effd',
-         venue:{id:''},
-         clickcount: 0},
-                
+         vid:'4e3b43271838cb1b82d2effd'},
+
         {name: 'Retzlaff Vineyards',
          addr: '1356 S Livermore Ave, Livermore',
-         phone: '(925)447-8941',
+         phone: '(925) 447-8941',
          lat: 37.673628,
          lng: -121.750495,
-         vid:'4b771c49f964a520737e2ee3',
-         venue:{id:''},
-         clickcount: 0},
-        
+         vid:'4b771c49f964a520737e2ee3'},
+
         {name: 'Wente Vineyard',
          addr: '5565 Tesla road, Livermore',
-         phone: '(925)456-0439',
+         phone: '(925) 456-0439',
          lat: 37.664250,
          lng: -121.725347,
-         vid:'4b19b7dcf964a520aee223e3',
-         venue:{id:''},
-         clickcount: 0},
+         vid:'4b19b7dcf964a520aee223e3'},
 ];
 // Save venues inf from four square indexed by ID.
 var fsVenue = [];
@@ -130,7 +118,7 @@ var viewModel = function (){
     // on list item select, simulate marker click event.
     this.selectWinery = function(wineryItem) {
         index = self.getItemIdx(wineryItem);        
-        console.log(wineryItem.name() + 'idx=' + index);
+        //console.log(wineryItem.name() + 'idx=' + index);
         if (index >= 0) {
             if (typeof google !== 'undefined'){
                 google.maps.event.trigger(markers[index], 'click');

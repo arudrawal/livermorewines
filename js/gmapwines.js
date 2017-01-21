@@ -69,7 +69,7 @@
                                 '<div id="addr">'+ listWineries[this.idx].addr +'</div>'+
                                 '<div id="phone">'+ listWineries[this.idx].phone +'</div>'+
                                 '<div id="rating"><a href="https://foursquare.com/">' +
-                                'FOURSQUARE Rating</a>: ' + rating +'</div>'+
+                                'FOURSQUARE.COM Rating</a>:&nbsp;<b>' + rating +'</b></div>'+
                             '</div>';
                         // Create unique copy of infoWindow
                         var infowindow = new google.maps.InfoWindow({
@@ -90,12 +90,11 @@
     function initMap(){        
         var divMap = document.getElementById('gmap');
         var livermoreCA = {lat: 37.67549, lng: -121.7582};
-        map = new google.maps.Map(divMap, 
+        map = new google.maps.Map(divMap,
                         {zoom: 12, center: livermoreCA});        
         //map.addEventListener(MapEvent.INFOWINDOW_CLOSED,alert('abc')); 
                                 //{restoreDefaultIcon(null);});
         updateMarkers(wineriesModel);
-        //console.log("Google map initialized");
     }
     function gmapError(){
         emap = document.getElementById('gmap');
@@ -106,15 +105,12 @@
     function load4SquareData(){
         for (i=0; i < wineriesModel.length; i++){
             var vurl4s = url4s + wineriesModel[i].vid + '?' + cred4s;
-            //console.log(vurl4s);
             $.ajax({
                 url: vurl4s,
                 dataType: 'json',
             }).done(function(result){
-                //console.log(result.response.venue.rating); 
                 if (result.meta.code == 200){
                     fsVenue[result.response.venue.id] = result.response.venue;
-                    //console.log(result.response.venue.id);
                 }
             }).fail(function(result){
                 console.log(result);
@@ -123,6 +119,5 @@
     }
     //Invoke data load from 4 square.
     $( document ).ready(function() {
-        //console.log( "ready!" );
         load4SquareData();
     });
