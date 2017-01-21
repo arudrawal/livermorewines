@@ -3,11 +3,8 @@
     var greenIcon = 'http://maps.google.com/mapfiles/ms/icons/green-dot.png';
     var defaultIcon = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png';
     var url4s = "https://api.foursquare.com/v2/venues/";
-    //var url4s = 'https://api.foursquare.com/v2/venues/search?';
     var CLIENT_ID='PFVHQYLSUNA4ZUWSBBPLR3UDK0ZBN40FSEKBWPPY3D4BNNL3';
     var CLIENT_SECRET='5NV3TQ4E5SK30RTPHXIQO12NB5RUZDUMC0VDMCRVGAZB4MHN';
-    //var CLIENT_ID = '5WCCP00O5EJYVALVKM2ZSV2R3GPNFIQH0LT4AZNQTUDGKAIC'
-    //var CLIENT_SECRET ='EOO4AXGRYFEJE0RET4CQJWO0FSCHDERWQPIC0DG5IKU3FSA1';
     var FS_VERSION = '20170115';
     //var today = new Date();
     //var FS_VERSION=today.getFullYear()+''+today.getMonth()+''+today.getDate();
@@ -19,6 +16,7 @@
           markers[i].setMap(map);
         }
     }
+    // Restore defaults on all except the one given as param
     function restoreDefaultIcon(exceptThis) {
         for (var i = 0; i < markers.length; i++) {
           if (exceptThis != markers[i]){
@@ -32,6 +30,7 @@
           }
         }
     }
+    // Clear animation frm the markers on timeout.
     function clearAnimation(){
         for (var i = 0; i < markers.length; i++) {
             if (markers[i].getAnimation() !== null) {
@@ -66,10 +65,11 @@
                             rating = venue.rating;
                         }
                         var contentString = '<div id="content">'+
-                            '<div id="name">'+ listWineries[this.idx].name +'</div>'+
-                            '<div id="addr">'+ listWineries[this.idx].addr +'</div>'+
-                            '<div id="phone">'+ listWineries[this.idx].phone +'</div>'+
-                            '<div id="rating">Foursquare Rating: '+ rating +'</div>'+
+                                '<div id="name">'+ listWineries[this.idx].name +'</div>'+
+                                '<div id="addr">'+ listWineries[this.idx].addr +'</div>'+
+                                '<div id="phone">'+ listWineries[this.idx].phone +'</div>'+
+                                '<div id="rating"><a href="https://foursquare.com/">' +
+                                'FOURSQUARE Rating</a>: ' + rating +'</div>'+
                             '</div>';
                         // Create unique copy of infoWindow
                         var infowindow = new google.maps.InfoWindow({
@@ -121,6 +121,7 @@
             });
         }
     }
+    //Invoke data load from 4 square.
     $( document ).ready(function() {
         //console.log( "ready!" );
         load4SquareData();
