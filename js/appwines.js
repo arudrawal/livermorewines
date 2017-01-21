@@ -1,3 +1,7 @@
+/**
+ * Data model hard code array of objects.
+ * vid: foursquare venue id
+ */
 var wineriesModel = [
         {name: '3 Steves Winery',
          addr: '5700 Greenville Rd, Livermore',
@@ -62,9 +66,14 @@ var wineriesModel = [
          lng: -121.725347,
          vid:'4b19b7dcf964a520aee223e3'},
 ];
-// Save venues inf from four square indexed by ID.
+/**
+ * Save venues information from four square indexed by VENUR_ID.
+ */
 var fsVenue = [];
 
+/**
+ * KnockoutJS observable object.
+ */
 var Winery = function(data) {
     this.name = ko.observable(data.name);
     this.addr = ko.observable(data.addr);
@@ -73,39 +82,51 @@ var Winery = function(data) {
     this.lng = ko.observable(data.lng);
     this.clickcount = ko.observable(data.clickcount);
 };
-// Consider a filter for the list.
+
+/**
+ * KnockoutJS observable viewmodel for list view.
+ */
 var viewModel = function (){
     // without var creates a global self and causes issue with gmap api
     // self = this; 
-    var self = this; // use self with surity of context
+    var self = this; // use self with security of context
     this.wineryList = ko.observableArray([]);
     wineriesModel.forEach(function (wineryItem){
             self.wineryList.push(new Winery(wineryItem));
     });
-    // Return item index equal to marker index 
+    /**
+     * @description   Return item index of a give item, equal to marker index,
+     *                We maintain index co-relation.
+     * @param  {Winery} item
+     * @return {intger} index, -1 if not found
+     */
     this.getItemIdx = function(item){
-        for (idx=0; idx < self.wineryList().length; idx++){
+        for (var idx=0; idx < self.wineryList().length; idx++){
             if (self.wineryList()[idx] == item){
                 return idx;
             }
         }
         return -1;
     }
-    // on submit filter form
+    /**
+     * @description   Filter the winery list and build fitered observable,
+     *                called on submit filter form. Case is ignored.
+     * @param  {FormElement} input filter
+     * @return
+     */    
     this.filterList = function (formElement){
             var feFilter = document.getElementById('filter');
             var stringFilterLC = feFilter.value.toLowerCase();
             var exp = "/" + stringFilterLC + "/";            
-            itemCount = len = wineriesModel.length;
+            var itemCount = len = wineriesModel.length;
             var filteredList = new Array();
             self.wineryList.removeAll();
-            for (idx=0; idx < itemCount; idx++){
+            for (var idx=0; idx < itemCount; idx++){
                 if (stringFilterLC.length <= 0 || stringFilterLC==='') {
                     self.wineryList.push(new Winery(wineriesModel[idx]));
                     filteredList.push(wineriesModel[idx]);
                 } else {
                     var nameLC = wineriesModel[idx].name.toLowerCase();
-                    //if (name.search(exp) >= 0){ // found
                     if (nameLC.indexOf(stringFilterLC) !== -1){
                         self.wineryList.push(new Winery(wineriesModel[idx]));
                         filteredList.push(wineriesModel[idx]);
@@ -115,18 +136,26 @@ var viewModel = function (){
             updateMarkers(filteredList);// Redo the map with filtered list.
             //console.log('filterList called with filter:' + stringFilterLC);          
     }
-    // on list item select, simulate marker click event.
+    // 
+    /**
+     * @description   on list item click, simulate marker click event.
+     * @param  {Winery} Item clicked.
+     * @return
+     */    
     this.selectWinery = function(wineryItem) {
-        index = self.getItemIdx(wineryItem);        
+        var index = self.getItemIdx(wineryItem);        
         //console.log(wineryItem.name() + 'idx=' + index);
         if (index >= 0) {
-            if (typeof google !== 'undefined'){
+            if (typeof google !== 'undefined'){ // maps loaded
                 google.maps.event.trigger(markers[index], 'click');
-            } else {
-                emap = document.getElementById('gmap');
-                emap.innerHTML = "<h1>Can't load map</h1>";
+            } else { // handle map init failure
+                var emap = document.getElementById('gmap');
+                emap.innerHTML = "<h1>Failed to load google map</h1>";
             }
         }
     }
 }
+/**
+ * Initialize KnockoutJS context on document.
+ */
 ko.applyBindings(new viewModel());
