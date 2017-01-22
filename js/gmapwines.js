@@ -59,14 +59,12 @@
      * @param {array} wineries
      * @returns
      */
-    function updateMarkers(listWineries){
+    function initMarkers(listWineries){
         if (typeof google == 'undefined'){
             var emap = document.getElementById('gmap');
             emap.innerHTML = "<h1>Failed to load google map</h1>";
             return;
         }
-        setMapOnAll(null);// Delete all markers
-        markers = [];
         for (var idx = 0; idx < listWineries.length; idx++){
             var pos = {lat: listWineries[idx].lat, 
                        lng: listWineries[idx].lng};
@@ -78,39 +76,40 @@
             markers.push(marker);
             
             marker.addListener('click', function() {
-                        // Extract venue info
-                        venue = fsVenue[listWineries[this.idx].vid];
-                        var rating;
-                        if (typeof venue == 'undefined') {
-                            rating = 'N/A'; // failed to get rating.
-                        } else {
-                            rating = venue.rating;
-                        }
-                        var contentString = '<div id="content">'+
-                            '<div id="name">'+ listWineries[this.idx].name +'</div>'+
-                            '<div id="addr">'+ listWineries[this.idx].addr +'</div>'+
-                            '<div id="phone">'+ listWineries[this.idx].phone +'</div>'+
-                            '<div id="rating"><a href="https://foursquare.com/">' +
-                            'FOURSQUARE.COM Rating</a>:&nbsp;<b>' + rating +'</b></div>'+
-                        '</div>';
-                        
-                        // Create infowindw once
-                        if (typeof this.infowindow == 'undefined') {
-                            this.infowindow = new google.maps.InfoWindow({
-                                content: contentString
-                            });
-                        } else {
-                            this.infowindow.setContent(contentString);
-                        }
-                        this.setIcon(GREEN_MARKER);
-                        this.infowindow.open(map, this);//this=marker
-                        // Restore default icon and close all other infowindows
-                        restoreDefaultIcon(this);
-                        // set animation for this
-                        this.setAnimation(google.maps.Animation.BOUNCE);
-                        window.setTimeout(clearAnimation, ANIMATIN_MS);
+                    // Extract venue info
+                    venue = fsVenue[listWineries[this.idx].vid];
+                    var rating;
+                    if (typeof venue == 'undefined') {
+                        rating = 'unable to load Foursquare';
+                    } else {
+                        rating = venue.rating;
                     }
-                );
+                    var contentString = '<div id="content">'+
+                        '<div id="name">'+ listWineries[this.idx].name +'</div>'+
+                        '<div id="addr">'+ listWineries[this.idx].addr +'</div>'+
+                        '<div id="phone">'+ listWineries[this.idx].phone +'</div>'+
+                        '<div id="rating"><a href="https://foursquare.com/v/' +
+                        listWineries[this.idx].vid + '">' +
+                        'FOURSQUARE.COM Rating</a>:&nbsp;<b>' + rating +'</b></div>'+
+                    '</div>';
+                    
+                    // Create infowindw once
+                    if (typeof this.infowindow == 'undefined') {
+                        this.infowindow = new google.maps.InfoWindow({
+                            content: contentString
+                        });
+                    } else {
+                        this.infowindow.setContent(contentString);
+                    }
+                    this.setIcon(GREEN_MARKER);
+                    this.infowindow.open(map, this);//this=marker
+                    // Restore default icon and close all other infowindows
+                    restoreDefaultIcon(this);
+                    // set animation for this
+                    this.setAnimation(google.maps.Animation.BOUNCE);
+                    window.setTimeout(clearAnimation, ANIMATIN_MS);
+                }
+            );
         }
     }
     /**
@@ -118,7 +117,7 @@
      * @param
      * @returns
      */    
-    function initMap(){        
+    function initMap(){
         var divMap = document.getElementById('gmap');
         var livermoreCA = {lat: 37.67549, lng: -121.7582};
         map = new google.maps.Map(divMap,
@@ -126,7 +125,7 @@
         // When infowindow is closed by mouse click.
         //map.addEventListener(MapEvent.INFOWINDOW_CLOSED,alert('abc')); 
                                //{restoreDefaultIcon(null);});
-        updateMarkers(wineriesModel);
+        initMarkers(wineriesModel);
     }
     
     /**
