@@ -51,17 +51,16 @@
             <ul class="nav nav-sidebar">
                 <li class="active">            
                 <form class="form-inline" data-bind="submit: filterList">
-                    <input type="text" id='filter' class="form-control" placeholder="Search..." list='browselist'>
-                    <datalist id='browselist' data-bind='foreach: wineryList'>
-                        <option data-bind='value: $data.name()'>
-                    </datalist>
-                    <!--<input type="button" name="Filter" value="Filter"></button>-->
+                    <input type="text" id='filter' class="form-control" placeholder="Search...">
                 </form>
                 </li>
             </ul>
             <!-- for active <span class="sr-only">(current)</span> -->
             <ul class="nav nav-sidebar" data-bind='foreach: wineryList' style='height: 100%;'>
-                <li> <a href="" data-bind='text: $data.name(), click: $parent.selectWinery'></a></li>
+                <!-- toggle display based on visibility -->
+                <li data-bind="visible: $data.visible"> 
+                    <a href="" data-bind='text: $data.name(), click: $parent.selectWinery'></a>
+                </li>
             </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" id='gmap'

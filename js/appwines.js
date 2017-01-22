@@ -80,7 +80,7 @@ var Winery = function(data) {
     this.phone = ko.observable(data.phone);    
     this.lat = ko.observable(data.lat);
     this.lng = ko.observable(data.lng);
-    this.clickcount = ko.observable(data.clickcount);
+    this.visible = ko.observable(true);
 };
 
 /**
@@ -120,16 +120,20 @@ var viewModel = function (){
             var exp = "/" + stringFilterLC + "/";            
             var itemCount = len = wineriesModel.length;
             var filteredList = new Array();
-            self.wineryList.removeAll();
+            //self.wineryList.removeAll();
             for (var idx = 0; idx < itemCount; idx++){
                 if (stringFilterLC.length <= 0 || stringFilterLC==='') {
-                    self.wineryList.push(new Winery(wineriesModel[idx]));
+                    //self.wineryList.push(new Winery(wineriesModel[idx]));
+                    self.wineryList()[idx].visible(true);
                     filteredList.push(wineriesModel[idx]);
                 } else {
                     var nameLC = wineriesModel[idx].name.toLowerCase();
                     if (nameLC.indexOf(stringFilterLC) !== -1){
-                        self.wineryList.push(new Winery(wineriesModel[idx]));
+                        //self.wineryList.push(new Winery(wineriesModel[idx]));
+                        self.wineryList()[idx].visible(true);
                         filteredList.push(wineriesModel[idx]);
+                    } else {
+                        self.wineryList()[idx].visible(false);
                     }
                 }
             }
