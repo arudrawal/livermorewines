@@ -80,7 +80,7 @@ var Winery = function(data) {
     this.phone = data.phone;//ko.observable(data.phone);
     this.lat = data.lat;//ko.observable(data.lat);
     this.lng = data.lng;//ko.observable(data.lng);
-    this.visible = ko.observable(true);
+    this.visible = ko.observable(true);    
 };
 
 /**
@@ -111,34 +111,36 @@ var viewModel = function (){
     /**
      * @description   Filter the winery list and build fitered observable,
      *                called on submit filter form. Case is ignored.
+     *                markers[] - is only defined if gmap init successful.
      * @param  {FormElement} input filter
      * @return
      */    
     this.filterList = function (formElement){
-            var feFilter = document.getElementById('filter');
-            var stringFilterLC = feFilter.value.toLowerCase();
-            var exp = "/" + stringFilterLC + "/";            
-            var itemCount = len = wineriesModel.length;
-            var filteredList = new Array();
-            //self.wineryList.removeAll();
-            for (var idx = 0; idx < itemCount; idx++){
-                if (stringFilterLC.length <= 0 || stringFilterLC==='') {
-                    //self.wineryList.push(new Winery(wineriesModel[idx]));
+        var feFilter = document.getElementById('filter');
+        var stringFilterLC = feFilter.value.toLowerCase();
+        var exp = "/" + stringFilterLC + "/";            
+        var itemCount = len = wineriesModel.length;
+        for (var idx = 0; idx < itemCount; idx++){
+            if (stringFilterLC.length <= 0 || stringFilterLC==='') {
+                self.wineryList()[idx].visible(true);
+                if (typeof markers[idx] !== 'undefined') {
+                    markers[idx].setMap(map);
+                }
+            } else {
+                var nameLC = wineriesModel[idx].name.toLowerCase();
+                if (nameLC.indexOf(stringFilterLC) !== -1){
                     self.wineryList()[idx].visible(true);
-                    filteredList.push(wineriesModel[idx]);
+                    if (typeof markers[idx] !== 'undefined') {
+                        markers[idx].setMap(map);
+                    }
                 } else {
-                    var nameLC = wineriesModel[idx].name.toLowerCase();
-                    if (nameLC.indexOf(stringFilterLC) !== -1){
-                        //self.wineryList.push(new Winery(wineriesModel[idx]));
-                        self.wineryList()[idx].visible(true);
-                        filteredList.push(wineriesModel[idx]);
-                    } else {
-                        self.wineryList()[idx].visible(false);
+                    self.wineryList()[idx].visible(false);
+                    if (typeof markers[idx] !== 'undefined'){
+                        markers[idx].setMap(null);
                     }
                 }
             }
-            updateMarkers(filteredList);// Redo the map with filtered list.
-            //console.log('filterList called with filter:' + stringFilterLC);          
+        }
     }
 
     /**
