@@ -75,11 +75,11 @@ var fsVenue = [];
  * KnockoutJS observable object.
  */
 var Winery = function(data) {
-    this.name = ko.observable(data.name);
-    this.addr = ko.observable(data.addr);
-    this.phone = ko.observable(data.phone);    
-    this.lat = ko.observable(data.lat);
-    this.lng = ko.observable(data.lng);
+    this.name = data.name;//ko.observable(data.name);
+    this.addr = data.addr;//ko.observable(data.addr);
+    this.phone = data.phone;//ko.observable(data.phone);
+    this.lat = data.lat;//ko.observable(data.lat);
+    this.lng = data.lng;//ko.observable(data.lng);
     this.visible = ko.observable(true);
 };
 
