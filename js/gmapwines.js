@@ -1,15 +1,15 @@
     var map; // load map only once
     var markers=[]; // maintain markers
-    var GREEN_MARKER = 'http://maps.google.com/mapfiles/ms/icons/green-dot.png';
-    var RED_MARKER = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png';
+    var GREEN_MARKER = "http://maps.google.com/mapfiles/ms/icons/green-dot.png";
+    var RED_MARKER = "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
     var URL4SQUARE = "https://api.foursquare.com/v2/venues/";
-    var CLIENT_ID='PFVHQYLSUNA4ZUWSBBPLR3UDK0ZBN40FSEKBWPPY3D4BNNL3';
-    var CLIENT_SECRET='5NV3TQ4E5SK30RTPHXIQO12NB5RUZDUMC0VDMCRVGAZB4MHN';
-    var FS_VERSION = '20170115';
+    var CLIENT_ID="PFVHQYLSUNA4ZUWSBBPLR3UDK0ZBN40FSEKBWPPY3D4BNNL3";
+    var CLIENT_SECRET="5NV3TQ4E5SK30RTPHXIQO12NB5RUZDUMC0VDMCRVGAZB4MHN";
+    var FS_VERSION = "20170115";
     //var today = new Date();
-    //var FS_VERSION=' ' + today.getFullYear()+today.getMonth()+today.getDate();
-    var CRED4SQUARE = 'client_id=' + CLIENT_ID + '&client_secret=' + 
-                      CLIENT_SECRET + '&v=' + FS_VERSION;
+    //var FS_VERSION=" " + today.getFullYear()+today.getMonth()+today.getDate();
+    var CRED4SQUARE = "client_id=" + CLIENT_ID + "&client_secret=" + 
+                      CLIENT_SECRET + "&v=" + FS_VERSION;
     var ANIMATIN_MS = 2000;
     var alarmSet = null;
     /**
@@ -63,12 +63,12 @@
         // Extract venue info
         venue = fsVenue[wineriesModel[marker.idx].vid];
         var rating;
-        if (typeof venue == 'undefined') {
-            rating = 'unable to load Foursquare';
+        if (typeof venue == "undefined") {
+            rating = "unable to load Foursquare";
         } else {
             rating = venue.rating;
         }
-        var contentString = '<div id="content">'+
+        var contentString = "<div id='content'>"+
             '<div id="name">'+ wineriesModel[marker.idx].name +'</div>'+
             '<div id="addr">'+ wineriesModel[marker.idx].addr +'</div>'+
             '<div id="phone">'+ wineriesModel[marker.idx].phone +'</div>'+
@@ -93,7 +93,6 @@
         marker.setAnimation(google.maps.Animation.BOUNCE);
         window.setTimeout(clearAnimation, ANIMATIN_MS);
     }
-
     /**
      * @description Create/Set markers from the array of wineries.
      * @param {array} wineries
