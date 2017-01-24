@@ -53,63 +53,71 @@
             }
         }
     }
+    /**
+     * @description called when marker is clicked.
+     * @param  {Marker} marker
+     * @returns
+     */
+    function onClickMarker(marker) {
+        // Extract venue info
+        venue = fsVenue[wineriesModel[marker.idx].vid];
+        var rating;
+        if (typeof venue == 'undefined') {
+            rating = 'unable to load Foursquare';
+        } else {
+            rating = venue.rating;
+        }
+        var contentString = '<div id="content">'+
+            '<div id="name">'+ wineriesModel[marker.idx].name +'</div>'+
+            '<div id="addr">'+ wineriesModel[marker.idx].addr +'</div>'+
+            '<div id="phone">'+ wineriesModel[marker.idx].phone +'</div>'+
+            '<div id="rating"><a href="https://foursquare.com/v/' +
+            wineriesModel[marker.idx].vid + '" target="_blank">' +
+            'FOURSQUARE.COM Rating</a>:&nbsp;<b>' + rating +'</b></div>'+
+        '</div>';
+
+        // Create infowindow once
+        if (typeof marker.infowindow == 'undefined') {
+            marker.infowindow = new google.maps.InfoWindow({
+                content: contentString
+            });
+        } else {
+            marker.infowindow.setContent(contentString);
+        }
+        marker.setIcon(GREEN_MARKER);
+        marker.infowindow.open(map, marker);//this=marker
+        // Restore default icon and close all other infowindows
+        restoreDefaultIcon(marker);
+        // set animation for this
+        marker.setAnimation(google.maps.Animation.BOUNCE);
+        window.setTimeout(clearAnimation, ANIMATIN_MS);
+    }
 
     /**
      * @description Create/Set markers from the array of wineries.
      * @param {array} wineries
      * @returns
      */
-    function initMarkers(listWineries){
+    function initMarkers(){
         if (typeof google == 'undefined'){
             var emap = document.getElementById('gmap');
             emap.innerHTML = "<h1>Failed to load google map</h1>";
             return;
         }
-        for (var idx = 0; idx < listWineries.length; idx++){
-            var pos = {lat: listWineries[idx].lat, 
-                       lng: listWineries[idx].lng};
+        for (var idx = 0; idx < wineriesModel.length; idx++){
+            var pos = {lat: wineriesModel[idx].lat, 
+                       lng: wineriesModel[idx].lng};
             var marker = new google.maps.Marker({
                 position: pos, map: map, 
-                title: listWineries[idx].name,
+                title: wineriesModel[idx].name,
                 animation: google.maps.Animation.DROP});
             marker.idx = idx; // save index position, need in click listener
             markers.push(marker);
             
-            marker.addListener('click', function() {
-                    // Extract venue info
-                    venue = fsVenue[listWineries[this.idx].vid];
-                    var rating;
-                    if (typeof venue == 'undefined') {
-                        rating = 'unable to load Foursquare';
-                    } else {
-                        rating = venue.rating;
-                    }
-                    var contentString = '<div id="content">'+
-                        '<div id="name">'+ listWineries[this.idx].name +'</div>'+
-                        '<div id="addr">'+ listWineries[this.idx].addr +'</div>'+
-                        '<div id="phone">'+ listWineries[this.idx].phone +'</div>'+
-                        '<div id="rating"><a href="https://foursquare.com/v/' +
-                        listWineries[this.idx].vid + '" target="_blank">' +
-                        'FOURSQUARE.COM Rating</a>:&nbsp;<b>' + rating +'</b></div>'+
-                    '</div>';
-                    
-                    // Create infowindow once
-                    if (typeof this.infowindow == 'undefined') {
-                        this.infowindow = new google.maps.InfoWindow({
-                            content: contentString
-                        });
-                    } else {
-                        this.infowindow.setContent(contentString);
-                    }
-                    this.setIcon(GREEN_MARKER);
-                    this.infowindow.open(map, this);//this=marker
-                    // Restore default icon and close all other infowindows
-                    restoreDefaultIcon(this);
-                    // set animation for this
-                    this.setAnimation(google.maps.Animation.BOUNCE);
-                    window.setTimeout(clearAnimation, ANIMATIN_MS);
-                }
-            );
+            marker.addListener('click', function(){
+                    var mk=this; // create a copy of marker
+                    onClickMarker(mk);
+            });
         }
     }
     /**
@@ -125,7 +133,7 @@
         // When infowindow is closed by mouse click.
         //map.addEventListener(MapEvent.INFOWINDOW_CLOSED,alert('abc')); 
                                //{restoreDefaultIcon(null);});
-        initMarkers(wineriesModel);
+        initMarkers();
     }
     
     /**
@@ -145,6 +153,7 @@
      * @returns
      */
     function load4SquareData(){
+        var anyError = false;
         for (var idx = 0; idx < wineriesModel.length; idx++){
             var url4s = URL4SQUARE + wineriesModel[idx].vid + '?' + CRED4SQUARE;
             $.ajax({
@@ -155,7 +164,7 @@
                     fsVenue[result.response.venue.id] = result.response.venue;
                 }
             }).fail(function(result){
-                console.log(result);
+                console.log(result);                
             });
         }
     }
