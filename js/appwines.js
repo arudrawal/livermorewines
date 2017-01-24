@@ -86,7 +86,7 @@ var Winery = function(data) {
 /**
  * KnockoutJS observable viewmodel for list view.
  */
-var viewModel = function (){
+var ViewModel = function (){
     // without var creates a global self and causes issue with gmap api
     // self = this; 
     var self = this; // use self with security of context
@@ -170,7 +170,10 @@ var viewModel = function (){
         }
     }
 }
+
 /**
  * Initialize KnockoutJS context on document.
+ * Retain the global refrence to ViewMdel object.
  */
-ko.applyBindings(new viewModel());
+var viewModel = new ViewModel()
+ko.applyBindings(viewModel);
