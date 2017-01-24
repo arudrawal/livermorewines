@@ -89,7 +89,7 @@
                         '<div id="addr">'+ listWineries[this.idx].addr +'</div>'+
                         '<div id="phone">'+ listWineries[this.idx].phone +'</div>'+
                         '<div id="rating"><a href="https://foursquare.com/v/' +
-                        listWineries[this.idx].vid + '">' +
+                        listWineries[this.idx].vid + '" target="_blank">' +
                         'FOURSQUARE.COM Rating</a>:&nbsp;<b>' + rating +'</b></div>'+
                     '</div>';
                     
