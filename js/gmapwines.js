@@ -11,6 +11,7 @@
     var CRED4SQUARE = 'client_id=' + CLIENT_ID + '&client_secret=' + 
                       CLIENT_SECRET + '&v=' + FS_VERSION;
     var ANIMATIN_MS = 2000;
+    var alarmSet = null;
     /**
      * @description Sets the map on all markers in the array.
      * @param {Object} map
@@ -147,6 +148,25 @@
         //console.log('Failed to load gmap');
     }
     /**
+     * @description Handle if foursquare.com venue loading failed.
+     * @param
+     * @returns
+     */
+    function fsError(){
+        // Incase Google map is intialized after four-square
+        if (typeof google !== 'undefined'){
+            var livermoreCA = {lat: 37.67549, lng: -121.7582};
+            var infowin4serror = new google.maps.InfoWindow({
+                    content: '<H1> ERROR: Failed to load foursquare.com</H1>',
+                });
+            infowin4serror.setPosition(livermoreCA);
+            infowin4serror.open(map);
+            return;
+        }
+        // Alternate to infowindow
+        alert('Failed to load foursquare.com venue rating.');
+    }
+    /**
      * @description Load venue data from foursquare.com
      *              Data is stored in global array of objects.
      * @param
@@ -164,7 +184,12 @@
                     fsVenue[result.response.venue.id] = result.response.venue;
                 }
             }).fail(function(result){
-                console.log(result);                
+                console.log(result);
+                if (alarmSet){
+                    clearTimeout(alarmSet);
+                }
+                // four seconds after last error
+                alarmSet = window.setTimeout(fsError, ANIMATIN_MS * 2);
             });
         }
     }
