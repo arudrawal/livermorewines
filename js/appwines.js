@@ -92,15 +92,15 @@ var viewModel = function (){
     var self = this; // use self with security of context
     this.wineryList = ko.observableArray([]);
     this.filterText = ko.observable('');
-
-    // Subscribe filter change event.
-    this.filterText.subscribe(function(newValue) {
-        //alert("The new filter is: " + newValue);
-        self.filterList(newValue);
-    });
     
     wineriesModel.forEach(function (wineryItem){
             self.wineryList.push(new Winery(wineryItem));
+    });
+    /** Subscribe filter change event.
+     */
+    this.filterText.subscribe(function(newValue) {
+        //alert("The new filter is: " + newValue);
+        self.filterList(newValue);
     });
     /**
      * @description   Return item index of a give item, equal to marker index,
