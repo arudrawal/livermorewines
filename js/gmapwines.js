@@ -93,7 +93,7 @@
                         'FOURSQUARE.COM Rating</a>:&nbsp;<b>' + rating +'</b></div>'+
                     '</div>';
                     
-                    // Create infowindw once
+                    // Create infowindow once
                     if (typeof this.infowindow == 'undefined') {
                         this.infowindow = new google.maps.InfoWindow({
                             content: contentString

@@ -51,7 +51,9 @@
             <ul class="nav nav-sidebar">
                 <li class="active">            
                 <form class="form-inline" data-bind="submit: filterList">
-                    <input type="text" id='filter' class="form-control" placeholder="Search...">
+                <!-- <form class="form-inline"> -->
+                    <input type="text" id='filter' class="form-control" placeholder="Search..."
+                        data-bind="textInput: filterText" />
                 </form>
                 </li>
             </ul>

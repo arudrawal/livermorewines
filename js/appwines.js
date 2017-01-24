@@ -91,6 +91,14 @@ var viewModel = function (){
     // self = this; 
     var self = this; // use self with security of context
     this.wineryList = ko.observableArray([]);
+    this.filterText = ko.observable('');
+
+    // Subscribe filter change event.
+    this.filterText.subscribe(function(newValue) {
+        //alert("The new filter is: " + newValue);
+        self.filterList(newValue);
+    });
+    
     wineriesModel.forEach(function (wineryItem){
             self.wineryList.push(new Winery(wineryItem));
     });
@@ -115,9 +123,10 @@ var viewModel = function (){
      * @param  {FormElement} input filter
      * @return
      */    
-    this.filterList = function (formElement){
-        var feFilter = document.getElementById('filter');
-        var stringFilterLC = feFilter.value.toLowerCase();
+    this.filterList = function (newFilter){
+        //var feFilter = document.getElementById('filter');
+        //var stringFilterLC = feFilter.value.toLowerCase();
+        var stringFilterLC = newFilter.toLowerCase();
         var exp = "/" + stringFilterLC + "/";            
         var itemCount = len = wineriesModel.length;
         for (var idx = 0; idx < itemCount; idx++){
